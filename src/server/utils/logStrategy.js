@@ -15,6 +15,13 @@ module.exports = function(passport,res){
             }
 
             if (!user || !user.validPassword(password)) {
+                if (user.locked) {
+                    console.log('account has been locked');
+                    return res.json({err: 'an error occured'});
+                }
+                if (user) {
+                    preventBrute(user);
+                }
                 return res.json({err: 'Invalid ID or password'});
             }
             req.login(user,function(err){
@@ -32,4 +39,19 @@ module.exports = function(passport,res){
     }
 
 	));
+}
+
+function preventBrute(user) {
+    if (user.attempts < 5) {
+        user.attempts = user.attempts + 1;
+    }
+    else {
+        user.attempts = 0;
+        user.locked = true;
+    }
+    console.log(user);
+    console.log(user.attempts);
+    user.save(function(err, user) {
+        if (err) return console.error(err);
+    });
 }
