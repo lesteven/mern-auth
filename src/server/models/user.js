@@ -6,10 +6,8 @@ var User = new Schema({
     email: String,
 	username: String,
 	password: String,
-    question: String,
-    answer: String,
-    locked: { type: Boolean, default: false },
-    attempts: {type: Number, default: 0 }
+    locked: {type:Boolean, default: false},
+    attempts: {type:Number, default: 0}
 })
 
 User.methods.generateHash = function(password){

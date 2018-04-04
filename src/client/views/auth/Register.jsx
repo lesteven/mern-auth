@@ -36,14 +36,6 @@ class Register extends Component {
                 <input type='password' name='password' placeholder='password'
                     value={auth.register.password}  
                     onChange={this.handleChange}/>
-                <input type='question' name='question' 
-                    placeholder='security question'
-                    value={auth.register.question} 
-                    onChange={this.handleChange}/>
-                <input type='answer' name='answer' 
-                    placeholder='security answer'
-                    value={auth.register.answer} 
-                    onChange={this.handleChange}/>
                 <input type='submit' value='Register'/>
             </form>
             </Fragment>

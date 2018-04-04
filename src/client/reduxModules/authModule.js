@@ -43,8 +43,6 @@ let initialState = {
         username:'',
         password:'',
         email:'',
-        question:'',
-        answer:''
     },
     login: {
         username: '',
