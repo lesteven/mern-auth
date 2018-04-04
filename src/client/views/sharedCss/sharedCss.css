@@ -1,0 +1,31 @@
+body {
+    margin:0;
+}
+.max-width {
+    margin:auto;
+    max-width:960px;
+}
+.top-pad {
+    padding:5vh 0vh;
+}
+.center {
+    text-align:center;
+}
+.err {
+    background-color:red;
+    color:white;
+    text-align:center;
+    padding:1vh;
+}
+.success {
+    background-color:green;
+    color:white;
+    text-align:center;
+    padding:1vh;
+}
+/* mobile view */
+@media only screen and (max-width:812px) {
+    .views {
+        padding:5vw;
+    }
+}
