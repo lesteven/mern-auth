@@ -8,8 +8,8 @@ var User = new Schema({
 	password: String,
     question: String,
     answer: String,
-    locked: Boolean,
-    attempts: Number
+    locked: { type: Boolean, default: false },
+    attempts: {type: Number, default: 0 }
 })
 
 User.methods.generateHash = function(password){

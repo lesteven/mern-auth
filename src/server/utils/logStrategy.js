@@ -21,6 +21,7 @@ module.exports = function(passport,res){
                 if(err){
                     return res.json({err:'there was an error'});
                 }
+                console.log(user);
                 return res.json({
                     user:user.username,
                     redirect:true,

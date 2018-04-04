@@ -118,9 +118,3 @@ function loginSuccess(status, state) {
 
 
 export default authReducer;
-
-
-
-
-
-

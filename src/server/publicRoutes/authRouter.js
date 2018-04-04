@@ -43,7 +43,6 @@ authRouter.route('/log')
 	}
 })
 .post(sanitize, function(req,res,next){
-
 	if(!req.body.username || !req.body.password){
 		return res.json({err:'incomplete form'})
 	}
