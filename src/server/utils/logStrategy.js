@@ -1,6 +1,9 @@
 var User = require('../models/user');
 var LocalStrategy = require('passport-local').Strategy;
 
+var config = require('../../../config.js');
+var sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(config.sendgrid.API_KEY);
 
 module.exports = function(passport,res){
 
@@ -48,6 +51,7 @@ function preventBrute(user) {
     else {
         user.attempts = 0;
         user.locked = true;
+        sendEmail();
     }
     console.log(user);
     console.log(user.attempts);
@@ -55,3 +59,31 @@ function preventBrute(user) {
         if (err) return console.error(err);
     });
 }
+
+
+function sendEmail(){
+	const email = {
+	  to: config.email,
+	  from: 'VBZ@example.com',
+	  subject: 'Account Locked',
+	  text: 'Your account has been locked, go to link to unlock it'  
+	};
+	//console.log(email);	
+	sgMail.send(email);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
