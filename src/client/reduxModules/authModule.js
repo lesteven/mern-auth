@@ -1,10 +1,13 @@
 // actions
-const makeAccount = '/redux/regModule/REGISTER';
-const updateRegInput = '/redux/regModule/REG_INPUT';
-const updateLogInput = '/redux/regModule/LOG_INPUT';
+const makeAccount = '/redux/authModule/REGISTER';
+const updateRegInput = '/redux/authModule/REG_INPUT';
+const updateLogInput = '/redux/authModule/LOG_INPUT';
+const login = '/redux/authModule/LOGIN';
 
 
 // action creaters
+
+// register actions
 export function registerAction(status) {
     return {
         type: makeAccount,
@@ -19,12 +22,20 @@ export function updateRI(name, value) {
         value
     }
 }
+// login actions
 export function updateLI(name, value) {
     return {
         type: updateLogInput,
         name,
         value
-    {
+    }
+}
+
+export function loginAction(status) {
+    return {
+        type: login,
+        status
+    }
 }
 // initial state
 let initialState = {
@@ -38,7 +49,7 @@ let initialState = {
     login: {
         username: '',
         password:''
-    }
+    },
     status: {}
 }
 // reducer
@@ -47,6 +58,7 @@ const authReducer = (state= initialState, action) => {
     switch (action.type) {
         case makeAccount:
             return {
+                ...state,
                 register: {
                     ...success(status, state)
                 },
@@ -68,6 +80,15 @@ const authReducer = (state= initialState, action) => {
                     [action.name]:action.value,
                 }
             }
+        case login: {
+            return {
+                ...state,
+                login: {
+                    ...loginSuccess(status, state)
+                },
+                status
+            }
+        }
         default:
             return state;
     }
@@ -80,7 +101,12 @@ function success(status, state) {
     else
         return state.register
 }
-
+function loginSuccess(status, state) {
+    if (status.user)
+        return initialState.login
+    else
+        return state.login
+}
 
 
 

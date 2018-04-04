@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { fetchData, postData } from '../../reduxModules/fetchThunk';
-import { registerAction, updateRI } from '../../reduxModules/authModule';
+import { registerAction, 
+         updateLI, loginAction } from '../../reduxModules/authModule';
 
 
 class Login extends Component {
@@ -12,18 +13,31 @@ class Login extends Component {
         postData('/api/auth/log', 'POST', data, loginAction); 
     }
     handleChange = (e) => {
-        const { updateRI } = this.props;
+        const { updateLI } = this.props;
         updateLI(e.target.name, e.target.value);
     }
 
     render() {
+    let { auth } = this.props;
         return (
-            <form className='auth'>
+            <Fragment>
+            {auth.status.err ? 
+                <h3 className='err'> {auth.status.err}</h3>
+                : null }
+            {auth.status.success ? 
+                <h3 className='success'> {auth.status.success}</h3>
+                : null }
+            <form className='auth' onSubmit={this.login} >
                 <h2> Login </h2>
-                <input type='text' name='username' placeholder='username'/>
-                <input type='password' name='password' placeholder='password'/>
+                <input type='text' name='username' placeholder='username'
+                    value={auth.login.username}  
+                    onChange={this.handleChange}/>
+                <input type='password' name='password' placeholder='password'
+                    value={auth.login.password}  
+                    onChange={this.handleChange}/>
                 <input type='submit' value='Login'/>
             </form>
+            </Fragment>
         )
     }
 }
