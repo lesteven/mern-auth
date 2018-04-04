@@ -55,7 +55,7 @@ function preventBrute(user) {
     else {
         user.attempts = 0;
         user.locked = true;
-        sendEmail();
+//        sendEmail();
         const url = generateUnlock();
         addLockedToDB(user.username, url); 
     }
