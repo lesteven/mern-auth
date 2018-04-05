@@ -27,6 +27,10 @@ module.exports = function(passport,res){
                 }
                 return res.json({err: 'Invalid ID or password'});
             }
+            if (user.locked) {
+                console.log('account has been locked');
+                return res.json({err: 'an error occured'});
+            }
             req.login(user,function(err){
                 if(err){
                     return res.json({err:'there was an error'});
@@ -47,7 +51,7 @@ module.exports = function(passport,res){
 
 	));
 }
-
+// prevent brute force attack on accounts
 function preventBrute(user) {
     if (user.attempts < 5) {
         user.attempts = user.attempts + 1;
@@ -55,9 +59,11 @@ function preventBrute(user) {
     else {
         user.attempts = 0;
         user.locked = true;
-//        sendEmail();
+
         const url = generateUnlock();
         addLockedToDB(user.username, url); 
+        const fullUrl ='http://localhost:8080/api/locked/' + url;  
+        sendEmail(fullUrl);
     }
     console.log(user);
     console.log(user.attempts);
@@ -66,18 +72,20 @@ function preventBrute(user) {
     });
 }
 
-
-function sendEmail(){
+// send email to user to warn of locked account
+function sendEmail(url){
 	const email = {
 	  to: config.email,
 	  from: 'VBZ@example.com',
 	  subject: 'Account Locked',
-	  text: 'Your account has been locked, go to link to unlock it'  
+	  text: 'Your account has been locked, go to link to unlock it\n' +
+            url 
 	};
 	//console.log(email);	
 	sgMail.send(email);
 }
 
+// generate random alphanumeric string for pw unlock url
 function generateUnlock() {
     const alphaNum = '1234567890abcdefghijklmnopqrstuvwxyz';
     let string = '';
@@ -89,6 +97,8 @@ function generateUnlock() {
     }
     return string;
 }
+
+// add locked user to db
 function addLockedToDB(username, url) {
     const account = new Locked({
         username,
